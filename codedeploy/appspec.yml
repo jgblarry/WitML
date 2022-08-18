@@ -1,0 +1,34 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/html
+    overwrite: true
+permissions:
+  - object: /var/www/html
+    owner: www-data
+    group: www-data
+    type:
+      - directory
+      - file
+hooks:
+  BeforeInstall:
+    - location: codedeploy/beforeinstall.sh
+      timeout: 900
+      runas: root
+  AfterInstall:
+    - location: codedeploy/afterinstall.sh
+      timeout: 1800
+      runas: root
+  ApplicationStart:
+    - location: codedeploy/run.sh
+      timeout: 320
+      runas: root
+  ApplicationStop:
+    - location: codedeploy/stop.sh
+      timeout: 320
+      runas: root
+  ValidateService:
+    - location: codedeploy/validate.sh
+      timeout: 300
+      runas: root

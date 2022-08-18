@@ -1,0 +1,10 @@
+.terraform
+.terraform/*
+.key
+.key/*
+*.tfstate
+.DS_Store
+*.pem
+*.pub
+*secret.tfvars*
+secret*
