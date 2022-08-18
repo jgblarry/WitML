@@ -1,30 +1,15 @@
 ## GLOBAL
 region                                  =   "us-east-1"
 project                                 =   "witadvisor"
-env                                     =   "production"
+env                                     =   "develop"
 creator                                 =   "reinaldoleon"
 terraform                               =   "true"
 sg_ssh_access                           =   "54.167.213.223/32" # Se crea al disponer de la Public IP de la instancia OpenVPN
 
 ## VPC
-vpc_cidr                                =   "172.16.0.0/16"
-prefixess_cidr                          =   "172.16"
+vpc_cidr                                =   "172.17.0.0/16"
+prefixess_cidr                          =   "172.17"
 azs                                     =   ["Aza", "Azb", "Azc", "Azd", "Aze", "Azf"]
-
-## OPENVPN INSTANCE
-openvpn_instance_name                   =   "OpenVPN"
-openvpn_instance_type                   =   "t3.small"
-openvpn_monitoring                      =   "true"
-openvpn_associate_public_ip_address     =   "true"
-openvpn_source_dest_check               =   "false"
-openvpn_ebs_root_size                   =   "20"
-openvpn_userdata                        =   "./modules/ec2/openvpn/userdata_openvpn_amz.tpl"
-
-## EBS-DLM
-interval                                =   "24"
-interval_unit                           =   "HOURS"
-times                                   =   "00:30"
-retain_count                            =   "10"
 
 ## AURORA MYSQL
 aurora_engine                           =   "aurora"
@@ -34,7 +19,7 @@ instance_type                           =   "db.t3.small"
 db_family                               =   "aurora5.6"
 database_name                           =   "witadvisor" 
 publicly_accessible                     =   "false"
-backup_retention_period                 =   "10"
+backup_retention_period                 =   "5"
 monitoring_interval                     =   "60"
 iam_database_authentication_enabled     =   "false"
 replica_scale_enabled                   =   true
@@ -72,12 +57,12 @@ stickiness_cookie_duration              =   "60"
 stickiness_enabled                      =   "false"
 
 ## ASG API - ADMIN
-max_size                                =   "10"
-min_size                                =   "2"
-desired_capacity                        =   "2"
+max_size                                =   "2"
+min_size                                =   "1"
+desired_capacity                        =   "1"
 health_check_grace_period               =   "120"
-api_instance_type                       =   "t3.micro"
-admin_instance_type                     =   "t3.micro"
+api_instance_type                       =   "t3.nano"
+admin_instance_type                     =   "t3.nano"
 cooldown                                =   "180"
 metric_name                             =   "CPUUtilization"
 namespace                               =   "AWS/EC2"
@@ -86,38 +71,28 @@ threshold_up                            =   "70"
 threshold_down                          =   "30"
 ebs_root_size                           =   "30"
 
-
 ## ASG CRON
-cron_max_size                           =   "1"
-cron_min_size                           =   "1"
-cron_desired_capacity                   =   "1"
-cron_instance_type                      =   "t3.micro"
+cron_max_size                           =   "0"
+cron_min_size                           =   "0"
+cron_desired_capacity                   =   "0"
+cron_instance_type                      =   "t3.nano"
 cron_ebs_root_size                      =   "20"
 
 ## CODEDEPLOY
 codedeploy_applications                 =   ["Api", "Admin"]
 codedeploy_cron                         =   "Cron" 
-codedeploy_env                          =   ["production"]
+codedeploy_env                          =   ["develop"]
 compute_platform                        =   "Server"
 deployment_config_name                  =   "CodeDeployDefault.OneAtATime"
 deployment_type                         =   "IN_PLACE"
 deployment_option                       =   "WITH_TRAFFIC_CONTROL"
-deployment_option_cron                  =   "WITHOUT_TRAFFIC_CONTROL"                    
-
-## JENKINS
-jenkins_instance_type                   =   "t3.small"
-jenkins_application                     =   "Jenkins"
-jenkins_userdata                        =   "userdata_jenkins_amz.tpl"
-jenkins_ebs_root_size                   =   "30"
-jenkins_instance_count                  =   "1"
-jenkins_monitoring                      =   true
-jenkins_hc_path                         =   "/login"
+deployment_option_cron                  =   "WITHOUT_TRAFFIC_CONTROL"                      
 
 ## REDIS
 redis_pg_family                         =   "redis5.0"
 redis_cluster_id                        =   "redis"
 redis_engine                            =   "redis"
-redis_node_type                         =   "cache.t3.small"
+redis_node_type                         =   "cache.t3.micro"
 redis_num_cache_nodes                   =   "1"
 redis_engine_version                    =   "5.0.4"
 redis_port                              =   "6379"
